@@ -1,2 +1,37 @@
 # sql-base-accounting-software
 SQL-powered accounting backend built with Supabase. Supports real-time generation of Trial Balance, P&amp;L, Balance Sheet, Cash Flow, Ledgers, Tax Reports. Great for SaaS devs, accountants &amp; learners exploring GAAP-compliant reporting.
+Trail Balance 
+
+WITH account_summary AS (
+  SELECT
+    coa.account_code,
+    coa.account_name,
+    coa.account_type,
+    SUM(CASE WHEN jnl.dc = 'debit' THEN jnl.amount ELSE 0 END) AS total_debit,
+    SUM(CASE WHEN jnl.dc = 'credit' THEN jnl.amount ELSE 0 END) AS total_credit,
+    CASE
+      WHEN coa.account_type IN ('asset', 'expense') THEN
+        SUM(CASE WHEN jnl.dc = 'debit' THEN jnl.amount ELSE -jnl.amount END)
+      ELSE
+        SUM(CASE WHEN jnl.dc = 'credit' THEN jnl.amount ELSE -jnl.amount END)
+    END AS final_balance
+  FROM jnl
+  JOIN chart_of_accounts coa ON jnl.account_code = coa.account_code
+  GROUP BY coa.account_code, coa.account_name, coa.account_type
+)
+
+SELECT * FROM account_summary
+
+UNION ALL
+
+SELECT
+  NULL::integer AS account_code,
+  'Grand Total' AS account_name,
+  NULL AS account_type,
+  SUM(total_debit),
+  SUM(total_credit),
+  SUM(final_balance)
+FROM account_summary
+
+ORDER BY account_code NULLS LAST;
+
