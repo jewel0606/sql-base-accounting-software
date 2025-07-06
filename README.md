@@ -39,6 +39,7 @@ SELECT
 FROM account_summary
 
 ORDER BY account_code NULLS LAST;
+```
 
 
 ### Ledger SQL Query
@@ -90,5 +91,5 @@ SELECT
     ELSE SUM(credit) - SUM(debit)
   END
 FROM ledger
-
 ;
+```
