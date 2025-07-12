@@ -1,6 +1,5 @@
-https://github.com/jewel0606/sql-base-accounting-software/blob/main/accsoft.png?raw=true
 
-
+<img width="1040" height="1701" alt="accsoft" src="https://github.com/user-attachments/assets/e753f027-1c12-4699-b2ae-06da710970cf" />
 
 budget
 ```sql
