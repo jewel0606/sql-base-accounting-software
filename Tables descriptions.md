@@ -1,6 +1,5 @@
--- WARNING: This schema is for context only and is not meant to be run.
--- Table order and constraints may not be valid for execution.
-
+budget
+```sql
 CREATE TABLE public.budget (
   expense_category_id character varying NOT NULL,
   name character varying NOT NULL,
@@ -8,6 +7,7 @@ CREATE TABLE public.budget (
   sub_category_name character varying,
   CONSTRAINT budget_pkey PRIMARY KEY (expense_category_id)
 );
+```
 CREATE TABLE public.chart_of_accounts (
   account_sub1 character varying,
   account_code integer NOT NULL,
