@@ -65,6 +65,8 @@ This SQL view generates the full financial statement summary directly from the j
 In accounting terms:
 
 Asset = Liability - Equity - Income + Expense 
+
+
 Therefore: Asset - Liability - Equity - Income + Expense = 0
 
 This equation should yield zero if all postings are accurate, confirming the structural correctness of the report.
