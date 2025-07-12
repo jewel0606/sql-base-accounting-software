@@ -2,7 +2,10 @@
 SQL-powered accounting backend built with Supabase. Supports real-time generation of Trial Balance, P&amp;L, Balance Sheet, Cash Flow, Ledgers, Tax Reports. Great for SaaS devs, accountants &amp; learners exploring GAAP-compliant reporting.
 
 
-### 1. Trial Balance SQL Query
+### 1. Trial Balance 
+
+### 1.1 Trial Balance SQL Query
+
 
 The following SQL view calculates a Trial Balance by aggregating journal entries, grouped by account code and type. It also includes a final row for the grand total.
 
@@ -44,6 +47,16 @@ FROM account_summary
  
 order by account_type;
 ```
+
+### 1.2 Trial Balance result in sql
+<img width="616" height="443" alt="image" src="https://github.com/user-attachments/assets/077562e9-e8f4-4e34-8d96-26a83527ed3f" />
+
+
+### 1.3 Trial Balance result in sql
+
+<img width="722" height="322" alt="image" src="https://github.com/user-attachments/assets/b70dc917-449f-4a66-affe-9ac7c58e1464" />
+
+
 
 
 ### Ledger SQL Query
