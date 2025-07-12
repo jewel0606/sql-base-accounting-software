@@ -1,3 +1,4 @@
+https://github.com/jewel0606/sql-base-accounting-software/blob/main/accsoft.png?raw=true
 budget
 ```sql
 CREATE TABLE public.budget (
