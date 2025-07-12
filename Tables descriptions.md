@@ -8,6 +8,9 @@ CREATE TABLE public.budget (
   CONSTRAINT budget_pkey PRIMARY KEY (expense_category_id)
 );
 ```
+
+chart of accounts
+```sql
 CREATE TABLE public.chart_of_accounts (
   account_sub1 character varying,
   account_code integer NOT NULL,
@@ -17,6 +20,10 @@ CREATE TABLE public.chart_of_accounts (
   account_sub2 character varying,
   CONSTRAINT chart_of_accounts_pkey PRIMARY KEY (account_code)
 );
+```
+
+contact
+```sql
 CREATE TABLE public.contact (
   contact_id character varying NOT NULL,
   type text CHECK (type = ANY (ARRAY['Customer'::text, 'Supplier'::text, 'Other'::text])),
@@ -33,6 +40,10 @@ CREATE TABLE public.contact (
   country character varying,
   CONSTRAINT contact_pkey PRIMARY KEY (contact_id)
 );
+```
+
+currency
+```sql
 CREATE TABLE public.currency (
   currency_id character varying NOT NULL,
   CONSTRAINT currency_pkey PRIMARY KEY (currency_id)
@@ -41,6 +52,10 @@ CREATE TABLE public.department (
   department_id character varying NOT NULL,
   CONSTRAINT department_pkey PRIMARY KEY (department_id)
 );
+```
+
+item
+```sql
 CREATE TABLE public.item (
   item_id integer NOT NULL,
   item_name character varying NOT NULL UNIQUE,
@@ -48,6 +63,9 @@ CREATE TABLE public.item (
   item_category character varying,
   CONSTRAINT item_pkey PRIMARY KEY (item_id)
 );
+```
+journal
+```sql
 CREATE TABLE public.jnl (
   transaction_id character varying NOT NULL,
   transaction_line_id character varying NOT NULL,
@@ -105,11 +123,19 @@ CREATE TABLE public.jnl (
   CONSTRAINT jnl_account_code_fkey FOREIGN KEY (account_code) REFERENCES public.chart_of_accounts(account_code),
   CONSTRAINT jnl_department_id_fkey FOREIGN KEY (department_id) REFERENCES public.department(department_id)
 );
+```
+location
+```
 CREATE TABLE public.location (
   location_id character varying NOT NULL,
   CONSTRAINT location_pkey PRIMARY KEY (location_id)
 );
+```
+
+user
+```sql
 CREATE TABLE public.user (
   user_id character varying NOT NULL,
   CONSTRAINT user_pkey PRIMARY KEY (user_id)
 );
+```
