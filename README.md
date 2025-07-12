@@ -48,18 +48,17 @@ FROM account_summary
 order by account_type;
 ```
 
+
 ### 1.2 Trial Balance result in sql
-<img width="616" height="443" alt="image" src="https://github.com/user-attachments/assets/077562e9-e8f4-4e34-8d96-26a83527ed3f" />
-
-
-### 1.3 Trial Balance result in sql
 
 <img width="722" height="322" alt="image" src="https://github.com/user-attachments/assets/b70dc917-449f-4a66-affe-9ac7c58e1464" />
 
+### 1.3 Trial Balance full result
+<img width="543" height="446" alt="image" src="https://github.com/user-attachments/assets/090eabf7-71ca-47e8-8d4a-e5dc904016a7" />
 
 
 
-### Ledger SQL Query
+### 2. Ledger SQL Query
 
 The following SQL view calculates a Ledger aggregating journal entries, grouped by account code and type. It also includes a final row for the grand total.
 
