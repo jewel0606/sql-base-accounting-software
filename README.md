@@ -287,3 +287,14 @@ SELECT
   NULL AS sort_order;
 
 ```
+
+### 2.2 financial statement summery in sql
+
+<img width="1190" height="306" alt="image" src="https://github.com/user-attachments/assets/82c1e843-d562-4b85-b409-5512a837660d" />
+
+
+### 2.3 financial statement summery result
+
+<img width="672" height="175" alt="image" src="https://github.com/user-attachments/assets/ffd0c644-3557-4b9d-a3e5-48067f39948a" />
+
+
