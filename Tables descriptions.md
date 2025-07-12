@@ -1,7 +1,11 @@
+# 1. This is the diagrame of Database
+
 
 <img width="1040" height="1701" alt="accsoft" src="https://github.com/user-attachments/assets/e753f027-1c12-4699-b2ae-06da710970cf" />
 
-budget
+# 2. Tables 
+
+# 2.1 budget
 ```sql
 CREATE TABLE public.budget (
   expense_category_id character varying NOT NULL,
@@ -12,7 +16,7 @@ CREATE TABLE public.budget (
 );
 ```
 
-chart of accounts
+# 2.2 chart of accounts
 ```sql
 CREATE TABLE public.chart_of_accounts (
   account_sub1 character varying,
@@ -25,7 +29,7 @@ CREATE TABLE public.chart_of_accounts (
 );
 ```
 
-contact
+# 2.3 contact
 ```sql
 CREATE TABLE public.contact (
   contact_id character varying NOT NULL,
@@ -45,19 +49,23 @@ CREATE TABLE public.contact (
 );
 ```
 
-currency
+# 2.4 currency
 ```sql
 CREATE TABLE public.currency (
   currency_id character varying NOT NULL,
   CONSTRAINT currency_pkey PRIMARY KEY (currency_id)
 );
+```
+
+# 2.5 department
+```sql
 CREATE TABLE public.department (
   department_id character varying NOT NULL,
   CONSTRAINT department_pkey PRIMARY KEY (department_id)
 );
 ```
 
-item
+# 2.6 item
 ```sql
 CREATE TABLE public.item (
   item_id integer NOT NULL,
@@ -67,7 +75,7 @@ CREATE TABLE public.item (
   CONSTRAINT item_pkey PRIMARY KEY (item_id)
 );
 ```
-journal
+# 2.7 journal
 ```sql
 CREATE TABLE public.jnl (
   transaction_id character varying NOT NULL,
@@ -127,7 +135,7 @@ CREATE TABLE public.jnl (
   CONSTRAINT jnl_department_id_fkey FOREIGN KEY (department_id) REFERENCES public.department(department_id)
 );
 ```
-location
+# 2.8 location
 ```
 CREATE TABLE public.location (
   location_id character varying NOT NULL,
@@ -135,7 +143,7 @@ CREATE TABLE public.location (
 );
 ```
 
-user
+# 2.9 user
 ```sql
 CREATE TABLE public.user (
   user_id character varying NOT NULL,
