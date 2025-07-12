@@ -9,9 +9,10 @@ The following SQL view calculates a Trial Balance by aggregating journal entries
 ```sql
 WITH account_summary AS (
   SELECT
+    coa.account_type,
+    coa.account_sub1,
     coa.account_code,
     coa.account_name,
-    coa.account_type,
     SUM(CASE WHEN jnl.dc = 'debit' THEN jnl.amount ELSE 0 END) AS total_debit,
     SUM(CASE WHEN jnl.dc = 'credit' THEN jnl.amount ELSE 0 END) AS total_credit,
     CASE
@@ -24,21 +25,24 @@ WITH account_summary AS (
   JOIN chart_of_accounts coa ON jnl.account_code = coa.account_code
   GROUP BY coa.account_code, coa.account_name, coa.account_type
 )
-
-SELECT * FROM account_summary
-
-UNION ALL
-
+ 
+SELECT 
+  account_type,
+  account_name,
+  total_debit,
+  total_credit,
+  final_balance FROM account_summary
+union all
+ 
 SELECT
-  NULL::integer AS account_code,
-  'Grand Total' AS account_name,
   NULL AS account_type,
+  'Grand Total' AS account_name,
   SUM(total_debit),
   SUM(total_credit),
   SUM(final_balance)
 FROM account_summary
-
-ORDER BY account_code NULLS LAST;
+ 
+order by account_type;
 ```
 
 
