@@ -202,91 +202,198 @@ fs AS (
     account_name
 )
 
--- Output Summary and Calculations
-SELECT * FROM fs
-WHERE account_category IS NULL
+-- report reconcile
+, recon as (
+  SELECT * FROM fs
+  WHERE account_category IS NULL
 
-UNION ALL
+  UNION ALL
 
--- Income Statement
-SELECT
-  'income statement = income - expense' AS account_type,
-  NULL AS account_category,
-  NULL AS main_ledger,
-  NULL AS sub_ledger,
-  NULL AS account_name,
-  NULL AS total_debit,
-  NULL AS total_credit,
-  (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'income' AND account_category IS NULL
-  ) - (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'expense' AND account_category IS NULL
-  ) AS final_balance,
-  NULL AS sort_order
+  -- Income Statement
+  SELECT
+    'income statement = income - expense' AS account_type,
+    NULL AS account_category,
+    NULL AS main_ledger,
+    NULL AS sub_ledger,
+    NULL AS account_name,
+    NULL AS total_debit,
+    NULL AS total_credit,
+    (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'income' AND account_category IS NULL
+    ) - (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'expense' AND account_category IS NULL
+    ) AS final_balance,
+    NULL AS sort_order
 
-UNION ALL
+  UNION ALL
 
--- Balance Sheet
-SELECT
-  'balance sheet = asset - liability - equity' AS account_type,
-  NULL AS account_category,
-  NULL AS main_ledger,
-  NULL AS sub_ledger,
-  NULL AS account_name,
-  NULL AS total_debit,
-  NULL AS total_credit,
-  (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'asset' AND account_category IS NULL
-  ) - (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'liability' AND account_category IS NULL
-  ) - (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'equity' AND account_category IS NULL
-  ) AS final_balance,
-  NULL AS sort_order
+  -- Balance Sheet
+  SELECT
+    'balance sheet = asset - liability - equity' AS account_type,
+    NULL AS account_category,
+    NULL AS main_ledger,
+    NULL AS sub_ledger,
+    NULL AS account_name,
+    NULL AS total_debit,
+    NULL AS total_credit,
+    (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'asset' AND account_category IS NULL
+    ) - (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'liability' AND account_category IS NULL
+    ) - (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'equity' AND account_category IS NULL
+    ) AS final_balance,
+    NULL AS sort_order
 
-UNION ALL
+  UNION ALL
 
--- Verification: Net Balance
-SELECT
-  'asset - liability - equity - income + expense = 0' AS account_type,
-  NULL AS account_category,
-  NULL AS main_ledger,
-  NULL AS sub_ledger,
-  NULL AS account_name,
-  NULL AS total_debit,
-  NULL AS total_credit,
-  (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'asset' AND account_category IS NULL
-  ) - (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'liability' AND account_category IS NULL
-  ) - (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'equity' AND account_category IS NULL
-  ) - (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'income' AND account_category IS NULL
-  ) + (
-    SELECT final_balance
-    FROM fs
-    WHERE account_type = 'expense' AND account_category IS NULL
-  ) AS final_balance,
-  NULL AS sort_order;
+  -- Verification: Net Balance
+  SELECT
+    'asset - liability - equity - income + expense = 0' AS account_type,
+    NULL AS account_category,
+    NULL AS main_ledger,
+    NULL AS sub_ledger,
+    NULL AS account_name,
+    NULL AS total_debit,
+    NULL AS total_credit,
+    (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'asset' AND account_category IS NULL
+    ) - (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'liability' AND account_category IS NULL
+    ) - (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'equity' AND account_category IS NULL
+    ) - (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'income' AND account_category IS NULL
+    ) + (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'expense' AND account_category IS NULL
+    ) AS final_balance,
+    NULL AS sort_order
+)
+ 
+-- report Balance Sheet
+, balance_sheet as (
+  SELECT
+  account_type,
+  account_category,
+  main_ledger,
+  sub_ledger,
+  account_name,
+  total_debit,
+  total_credit,
+  final_balance
+  FROM fs
+  WHERE account_type IN ('asset', 'liability', 'equity')
+    AND sort_order = 4
+
+  UNION ALL
+
+  SELECT
+    'TOTAL' AS account_type,
+    NULL AS account_category,
+    NULL AS main_ledger,
+    NULL AS sub_ledger,
+    'Total Balance' AS account_name,
+    SUM(total_debit),
+    SUM(total_credit),
+        (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'asset' AND account_category IS NULL
+    ) - (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'liability' AND account_category IS NULL
+    ) - (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'equity' AND account_category IS NULL
+    ) AS final_balance
+
+  FROM fs
+  WHERE account_type IN ('asset', 'liability', 'equity')
+    AND sort_order = 4
+  ORDER BY
+    account_type,
+    account_category DESC NULLS LAST,
+    main_ledger,
+    sub_ledger,
+    account_name
+)
+
+-- report trail_balance
+, trail_balance as(select * from account_summary)
+
+-- report income_statement
+, income_statement as (
+  SELECT
+    account_type,
+    account_category,
+    main_ledger,
+    sub_ledger,
+    account_name,
+    total_debit,
+    total_credit,
+    final_balance
+  FROM fs
+  WHERE account_type IN ('income', 'expense') AND sort_order = 4
+
+  UNION ALL
+
+  -- ➕ Net Income as total row
+  SELECT
+    'TOTAL' AS account_type,
+    NULL AS account_category,
+    NULL AS main_ledger,
+    NULL AS sub_ledger,
+    'Net Income' AS account_name,
+    SUM(total_debit),
+    SUM(total_credit),
+     (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'income' AND account_category IS NULL
+    ) - (
+      SELECT final_balance
+      FROM fs
+      WHERE account_type = 'expense' AND account_category IS NULL
+    ) AS final_balance
+  FROM fs
+  WHERE account_type IN ('income', 'expense') AND sort_order = 4
+
+  ORDER BY
+    account_type DESC,
+    account_category DESC NULLS LAST,
+    main_ledger,
+    sub_ledger,
+    account_name
+)
+
+-- SELECT * FROM trial_balance;
+--SELECT * FROM balance_sheet;
+--SELECT * FROM income_statement;
+SELECT * FROM recon;
+
+
 
 ```
 
