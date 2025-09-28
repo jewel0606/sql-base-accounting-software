@@ -56,6 +56,6 @@ GROUP BY symbol
 ORDER BY trade_count DESC;
 ```
 ### Result
-<img width="238" height="591" alt="image" src="https://github.com/user-attachments/assets/eb5884c9-b7b6-44d9-8d3d-31e8d9c625d1" /> <img width="241" height="578" alt="image" src="https://github.com/user-attachments/assets/8f6258b0-5e82-4645-aebd-2f3be4c4e4ea" />
+<img width="238" height="591" alt="image" src="https://github.com/user-attachments/assets/eb5884c9-b7b6-44d9-8d3d-31e8d9c625d1" />       <img width="241" height="578" alt="image" src="https://github.com/user-attachments/assets/8f6258b0-5e82-4645-aebd-2f3be4c4e4ea" />
 
 
