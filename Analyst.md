@@ -95,6 +95,28 @@ ORDER BY total_profit DESC;
 ```
 ### Result - In attached Pdf named - 6. PROFITABILITY ANALYSIS
 
+### 7. Profit Distribution Analysis
+
+```sql
+SELECT 
+    login,
+    ticket,
+    open_time,
+    profit,
+    SUM(profit) OVER (
+        PARTITION BY login 
+        ORDER BY open_time 
+        ROWS UNBOUNDED PRECEDING
+    ) as cumulative_profit,
+    ROW_NUMBER() OVER (
+        PARTITION BY login 
+        ORDER BY open_time
+    ) as trade_sequence
+FROM analyst
+ORDER BY login, open_time;
+```
+### Result 
+<img width="633" height="210" alt="image" src="https://github.com/user-attachments/assets/0c59a70e-2d61-4de9-8397-f37fab105b34" />
 
 
 
