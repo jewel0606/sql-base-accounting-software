@@ -1,4 +1,6 @@
-Data Structure Overview
+# Data Structure Overview
+
+```sql
 SELECT 'Data Structure Analysis' as analysis_type;
 
 SELECT 
@@ -8,3 +10,4 @@ SELECT
     MIN(open_time) as earliest_trade,
     MAX(close_time) as latest_trade
 FROM analyst;
+```
