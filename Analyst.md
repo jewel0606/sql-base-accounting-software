@@ -44,7 +44,7 @@ HAVING COUNT(*) > 1
 ### Result
 <img width="158" height="626" alt="image" src="https://github.com/user-attachments/assets/2cc56ff8-f53b-467a-8b2d-e98ff12076b4" />
 
-### 3. Data Distribution Analysis
+### 4. Data Distribution Analysis
 
 ```sql
 SELECT 
@@ -59,3 +59,42 @@ ORDER BY trade_count DESC;
 <img width="238" height="591" alt="image" src="https://github.com/user-attachments/assets/eb5884c9-b7b6-44d9-8d3d-31e8d9c625d1" />   
 
 <img width="206" height="522" alt="image" src="https://github.com/user-attachments/assets/1f2d372f-27e3-4539-8cdf-a561663f5c47" />
+
+### 5.Trade Type Distribution
+
+```sql
+SELECT 
+    type,
+    COUNT(*) as trade_count,
+    ROUND(AVG(profit), 2) as avg_profit_per_type,
+    ROUND(SUM(profit), 2) as total_profit_per_type
+FROM analyst
+GROUP BY type;
+```
+### Result
+<img width="655" height="220" alt="image" src="https://github.com/user-attachments/assets/b3f7beed-d1ff-4650-a5cf-716b2af70481" />
+
+### 6. PROFITABILITY ANALYSIS
+
+```sql
+SELECT 
+    login,
+    COUNT(*) as total_trades,
+    ROUND(SUM(profit), 2) as total_profit,
+    ROUND(AVG(profit), 2) as avg_profit_per_trade,
+    ROUND(MIN(profit), 2) as worst_trade,
+    ROUND(MAX(profit), 2) as best_trade,
+    SUM(CASE WHEN profit > 0 THEN 1 ELSE 0 END) as winning_trades,
+    SUM(CASE WHEN profit <= 0 THEN 1 ELSE 0 END) as losing_trades,
+    ROUND(
+        SUM(CASE WHEN profit > 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2
+    ) as win_rate_percentage
+FROM analyst
+GROUP BY login
+ORDER BY total_profit DESC;
+```
+### Result - In attached Pdf named - 6. PROFITABILITY ANALYSIS
+
+
+
+
